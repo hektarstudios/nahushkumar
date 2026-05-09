@@ -99,7 +99,8 @@
   }
   @media (max-width: 768px) {
     html {
-      background-image: none;
+      background-attachment: scroll;
+      background-position: center top;
     }
   }
 
@@ -789,6 +790,12 @@
     .zarf-popup-input { border-right: 1px solid var(--border); }
     .zarf-popup-btn { width: 100%; padding: .85rem; }
     .v-tag { display: none; }
+    .v-card.featured .v-thumb { aspect-ratio: 16/9; }
+    .v-card.featured .v-name { font-size: 1.3rem; }
+    .v-card.featured .v-blurb { font-size: .72rem; max-width: 100%; }
+    .v-card.featured .v-play { width: 42px; height: 42px; bottom: 1rem; right: 1rem; }
+    .v-card.featured .v-play svg { width: 14px; height: 14px; }
+    .v-card.featured .v-content { padding: 1rem 1.4rem 1.1rem; }
   }
   .modal-close { position:absolute;top:-42px;right:0;background:none;border:none;color:var(--champagne);font-size:1.4rem;cursor:pointer;padding:.5rem; }
   .modal-wrap { aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center; }
