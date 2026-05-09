@@ -1206,6 +1206,28 @@
 })();
 </script>
 
+<script>
+// Mobile-only fade override
+(function(){
+  if (window.innerWidth > 768) return;
+  const fade = document.getElementById('bgFade');
+  function updateMobile(){
+    const hero = document.getElementById('hero');
+    const end  = document.getElementById('booking');
+    if (!hero || !end || !fade) return;
+    const start = hero.offsetTop;
+    const stop  = end.offsetTop + end.offsetHeight;
+    const y = window.scrollY + window.innerHeight * 0.35;
+    const t = Math.max(0, Math.min(1, (y - start) / (stop - start)));
+    fade.style.opacity = (0.65 + t * 0.15).toFixed(4);
+  }
+  window.addEventListener('scroll', updateMobile, { passive: true });
+  window.addEventListener('resize', updateMobile);
+  document.addEventListener('DOMContentLoaded', updateMobile);
+  updateMobile();
+})();
+</script>
+
 <!-- ── STAGE ATMOSPHERE LAYERS — fixed-position, behind everything ───
      CSS-only spotlights + canvas-driven golden dust.
      z-index sits behind nav/sections (which are z:1) so content reads clean.
