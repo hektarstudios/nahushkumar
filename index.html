@@ -100,7 +100,16 @@
   @media (max-width: 768px) {
     html {
       background-attachment: scroll;
+      background-image: url('assets/images/bg-stage-mobile.jpg');
       background-position: center top;
+    }
+    html::before {
+      background: rgba(7, 5, 10, 0.72);
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      content: '';
+      pointer-events: none;
     }
   }
 
