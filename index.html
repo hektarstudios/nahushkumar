@@ -3,8 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nahush Kumar — Singer · Songwriter · Voiceover Artist · Bengaluru | V11</title>
+<title>Nahush Kumar — Singer · Songwriter · Voiceover Artist · Bengaluru</title>
 <meta name="description" content="Nahush Kumar is a Bengaluru-based singer-songwriter, live performer and voiceover artist. Carnatic classical roots. Ambient synthwave soul. His debut EP 'Zarf' is coming soon.">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO — Canonical, Open Graph & Twitter Card
+     ═══════════════════════════════════════════════════════════════ -->
+<link rel="canonical" href="https://www.nahushkumar.com/" />
+
+<!-- Open Graph (WhatsApp, LinkedIn, Facebook, Instagram previews) -->
+<meta property="og:type"         content="website" />
+<meta property="og:url"          content="https://www.nahushkumar.com/" />
+<meta property="og:title"        content="Nahush Kumar — Singer · Songwriter · Voiceover Artist" />
+<meta property="og:description"  content="Bengaluru-based singer-songwriter and voiceover artist. Carnatic classical roots. Ambient synthwave soul. Debut EP 'Zarf' coming soon." />
+<meta property="og:image"        content="https://www.nahushkumar.com/assets/images/nahush.jpg" />
+<meta property="og:image:width"  content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale"       content="en_IN" />
+<meta property="og:site_name"    content="Nahush Kumar" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content="Nahush Kumar — Singer · Songwriter · Voiceover Artist" />
+<meta name="twitter:description" content="Bengaluru-based singer-songwriter and voiceover artist. Debut EP 'Zarf' coming soon." />
+<meta name="twitter:image"       content="https://www.nahushkumar.com/assets/images/nahush.jpg" />
 <!-- ──────────────────────────────────────────────────────────────────
   DESIGN PASS — V7
   Brief from Nahush: improve colour, type, structure; build an elegant,
@@ -3160,6 +3182,82 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
     drawWave(document.getElementById('wave-3'), 21, 60);
     drawWave(document.getElementById('wave-4'), 31, 60);
   })();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO — Structured Data (JSON-LD)
+     Tells Google exactly who Nahush is, what he does, and where to
+     find him — enabling a Knowledge Panel and rich search snippets.
+     IMPORTANT: Replace all REPLACE_WITH_YOUR_... placeholders below
+     with your actual social media profile URLs.
+     ═══════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://www.nahushkumar.com/#nahush",
+      "name": "Nahush Kumar",
+      "url": "https://www.nahushkumar.com",
+      "image": "https://www.nahushkumar.com/assets/images/nahush.jpg",
+      "description": "Bengaluru-based singer-songwriter, live performer and voiceover artist with Carnatic classical roots and ambient synthwave soul.",
+      "jobTitle": ["Singer", "Songwriter", "Voiceover Artist", "Live Performer"],
+      "knowsLanguage": ["English", "Hindi", "Kannada"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://open.spotify.com/artist/REPLACE_WITH_YOUR_SPOTIFY_ARTIST_ID",
+        "https://www.instagram.com/REPLACE_WITH_YOUR_INSTAGRAM_HANDLE",
+        "https://www.youtube.com/@REPLACE_WITH_YOUR_YOUTUBE_CHANNEL",
+        "https://soundcloud.com/REPLACE_WITH_YOUR_SOUNDCLOUD_HANDLE",
+        "https://www.linkedin.com/in/REPLACE_WITH_YOUR_LINKEDIN_PROFILE"
+      ]
+    },
+    {
+      "@type": "MusicGroup",
+      "@id": "https://www.nahushkumar.com/#musicgroup",
+      "name": "Nahush Kumar",
+      "url": "https://www.nahushkumar.com",
+      "image": "https://www.nahushkumar.com/assets/images/nahush.jpg",
+      "description": "Singer-songwriter performing in English, Hindi and Kannada. Carnatic classical roots. Ambient synthwave soul.",
+      "genre": ["Indian Classical", "Ambient", "Synthwave", "Soft Rock", "Indie", "Sufi", "Ghazal"],
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Bengaluru, Karnataka, India"
+      },
+      "member": { "@id": "https://www.nahushkumar.com/#nahush" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.nahushkumar.com/#website",
+      "url": "https://www.nahushkumar.com",
+      "name": "Nahush Kumar",
+      "description": "Official website of Nahush Kumar — Singer, Songwriter and Voiceover Artist based in Bengaluru.",
+      "publisher": { "@id": "https://www.nahushkumar.com/#nahush" }
+    },
+    {
+      "@type": "MusicAlbum",
+      "@id": "https://www.nahushkumar.com/#zarf",
+      "name": "Zarf",
+      "byArtist": { "@id": "https://www.nahushkumar.com/#nahush" },
+      "albumProductionType": "StudioAlbum",
+      "description": "Debut EP by Nahush Kumar. Eleven songs across three chapters — To Love, To Lose, To Choose.",
+      "numTracks": 11
+    },
+    {
+      "@type": "MusicRecording",
+      "name": "Aleyo Kadalo",
+      "byArtist": { "@id": "https://www.nahushkumar.com/#nahush" },
+      "inLanguage": "kn",
+      "url": "https://open.spotify.com/track/1041ZvR9ic2OmsUhjzRXEv",
+      "datePublished": "2025-01"
+    }
+  ]
+}
 </script>
 </body>
 </html>
