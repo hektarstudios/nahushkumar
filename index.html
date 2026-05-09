@@ -99,18 +99,16 @@
   }
   @media (max-width: 768px) {
     html {
-      background-attachment: scroll;
-      background-image: url('assets/images/bg-stage-mobile.jpg');
-      background-size: 100% auto;
-      background-position: center top;
-      background-repeat: repeat-y;
+      background-image: none;
     }
-    html::before {
-      background: rgba(7, 5, 10, 0.50);
+    #mob-bg-img {
+      display: block;
       position: fixed;
       inset: 0;
       z-index: 0;
-      content: '';
+      background-image: url('assets/images/bg-stage-mobile.jpg');
+      background-size: cover;
+      background-position: center 25%;
       pointer-events: none;
     }
   }
@@ -1164,6 +1162,7 @@
     z-index: 0;
     transition: opacity 0.05s linear;
   }
+  #mob-bg-img { display: none; }
   /* belt-and-suspenders: nuke any opaque bg on every descendant of the photo-run sections
      EXCEPT cards/badges that are intentionally surface-toned */
   #hero, #about, #single, .single-section, #zarf, #live, #voiceover,
@@ -1179,6 +1178,9 @@
 </style>
 </head>
 <body>
+
+<!-- Mobile background — fixed position so it stays static while content scrolls -->
+<div id="mob-bg-img" aria-hidden="true"></div>
 
 <!-- Continuous photo-fade overlay — opacity driven by scroll position -->
 <div class="bg-fade" id="bgFade" aria-hidden="true"></div>
