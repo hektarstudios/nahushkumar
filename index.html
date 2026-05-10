@@ -121,13 +121,14 @@
   }
   #mob-bg-img { display: none; }
 
-  /* iPad / tablet: background-attachment:fixed is broken on iOS Safari —
-     switch to the mobile image rendered as a plain fixed-position element,
-     same strategy as mobile, covering 769px–1100px */
-  @media (min-width: 769px) and (max-width: 1100px) {
-    html {
-      background-image: none;
-    }
+  /* ── TOUCH DEVICE BACKGROUND FIX ─────────────────────────────────────
+     background-attachment:fixed is broken on ALL iOS/iPadOS — Safari
+     tiles from the viewport origin instead, causing the skew.
+     (hover:none) + (pointer:coarse) catches every touch screen —
+     phones and iPads — in any orientation, at any width.
+     ──────────────────────────────────────────────────────────────────── */
+  @media (hover: none) and (pointer: coarse) {
+    html { background-image: none; }
     #mob-bg-img {
       display: block;
       position: fixed;
@@ -140,19 +141,12 @@
     }
   }
 
-  @media (max-width: 768px) {
-    html {
-      background-image: none;
-    }
+  /* iPad landscape: use the higher-res desktop image — better framed for
+     wide aspect ratios. Still no background-attachment:fixed.           */
+  @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (min-width: 900px) {
     #mob-bg-img {
-      display: block;
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background-image: url('assets/images/bg-stage-mobile.jpg');
-      background-size: cover;
-      background-position: center 25%;
-      pointer-events: none;
+      background-image: url('assets/images/bg-stage.jpg');
+      background-position: center 35%;
     }
   }
 
@@ -1050,11 +1044,11 @@
   @media(max-width:900px){
     #hero {
       grid-template-columns:1fr;
-      /* Content was being vertically centered in 100vh — with the photo
-         column hidden that created a huge dead zone above the text.
-         Switch to flex-end so it anchors near the bottom of the hero,
-         matching the mobile layout's feel. */
-      align-items: flex-end;
+      /* align-items positions items within their grid area — it doesn't
+         move the row. align-content: end pushes the row track itself to
+         the bottom of the min-height:100vh container, eliminating the
+         dead zone between the nav and the hero text in portrait.       */
+      align-content: end;
       padding-bottom: 3.5rem;
     }
     .hero-visual { display:none; }
