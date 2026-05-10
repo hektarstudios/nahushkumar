@@ -160,6 +160,13 @@
     }
   }
 
+  /* Mobile: the animated light beams (mix-blend-mode:screen) have less
+     visual impact on a small viewport, leaving the image looking flatter
+     than on iPad. A small brightness lift matches the two levels.       */
+  @media (hover: none) and (pointer: coarse) and (max-width: 680px) {
+    #mob-bg-img { filter: brightness(1.2); }
+  }
+
   /* ── STAGE BACKGROUND — concert-hall atmosphere ─────────────────────
      A musician is at home in three things: low warm light, the breath
      between notes, and dust drifting in a beam. The background below
