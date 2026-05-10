@@ -119,34 +119,20 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
-  #mob-bg-img { display: none; }
+  #mob-bg-img { display: none; } /* not used — kept for markup compatibility */
 
-  /* ── TOUCH DEVICE BACKGROUND FIX ─────────────────────────────────────
-     background-attachment:fixed is broken on ALL iOS/iPadOS — Safari
-     tiles from the viewport origin instead, causing the skew.
-     (hover:none) + (pointer:coarse) catches every touch screen —
-     phones and iPads — in any orientation, at any width.
+  /* ── iOS / TOUCH DEVICE BACKGROUND FIX ───────────────────────────────
+     background-attachment:fixed is broken on all iOS/iPadOS Safari —
+     it tiles from the viewport rather than scrolling naturally, causing
+     the image to appear skewed or zoomed.
+     Fix: simply switch to scroll attachment on any touch-primary device.
+     Same desktop image, no extra file needed, no z-index complexity.
+     Works in both portrait and landscape, all iPad sizes.
      ──────────────────────────────────────────────────────────────────── */
   @media (hover: none) and (pointer: coarse) {
-    html { background-image: none; }
-    #mob-bg-img {
-      display: block;
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background-image: url('assets/images/bg-stage-mobile.jpg');
-      background-size: cover;
-      background-position: center 25%;
-      pointer-events: none;
-    }
-  }
-
-  /* iPad landscape: use the higher-res desktop image — better framed for
-     wide aspect ratios. Still no background-attachment:fixed.           */
-  @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (min-width: 900px) {
-    #mob-bg-img {
-      background-image: url('assets/images/bg-stage.jpg');
-      background-position: center 35%;
+    html {
+      background-attachment: scroll;
+      background-position: center 20%;
     }
   }
 
