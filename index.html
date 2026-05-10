@@ -120,6 +120,26 @@
     background-attachment: fixed;
   }
   #mob-bg-img { display: none; }
+
+  /* iPad / tablet: background-attachment:fixed is broken on iOS Safari —
+     switch to the mobile image rendered as a plain fixed-position element,
+     same strategy as mobile, covering 769px–1100px */
+  @media (min-width: 769px) and (max-width: 1100px) {
+    html {
+      background-image: none;
+    }
+    #mob-bg-img {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image: url('assets/images/bg-stage-mobile.jpg');
+      background-size: cover;
+      background-position: center 25%;
+      pointer-events: none;
+    }
+  }
+
   @media (max-width: 768px) {
     html {
       background-image: none;
@@ -1017,12 +1037,17 @@
   /* RESPONSIVE */
   @media(max-width:1100px){
     nav,nav.scrolled { padding-left:3rem;padding-right:3rem; }
+    .nav-links { gap:2rem; }
+    .nav-links a { font-size:.66rem; letter-spacing:.12em; }
+    .nav-cta { padding:.5rem 1rem; font-size:.66rem; letter-spacing:.12em; }
     section { padding:6rem 3rem; }
     .naad-badge { right:0; }
     .hero-name { font-size:clamp(4rem,8vw,7rem); }
     .hero-tagline { font-size:clamp(0.8rem,1.3vw,1rem); max-width:480px; }
     .hero-tagline strong { font-size:clamp(0.9rem,1.5vw,1.1rem); }
     .hero-pills { margin-bottom:2rem; }
+    /* iPad: tighten hero top padding so content sits closer to the nav */
+    #hero { padding-top:clamp(4rem,7vh,6rem); }
   }
   @media(max-width:900px){
     #hero { grid-template-columns:1fr; }
