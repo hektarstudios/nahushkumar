@@ -3128,20 +3128,29 @@ window.addEventListener('resize', fitHeroFrame);
 setTimeout(fitHeroFrame, 900);
 window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('scrolled',scrollY>60); });
 
-// ── iOS BACKGROUND ZOOM FIX — JS fallback for Safari < 15.4 ──────────────
-// 100lvh (CSS above) handles modern iOS. For older versions that still use
-// 100vh (which resizes when browser chrome collapses), we lock the background
-// div to a fixed pixel height immediately on load, before any scroll occurs.
-// This means chrome-collapse doesn't trigger a resize → no zoom jump.
-// We only re-lock on orientationchange (after a short settle delay).
+// ── iOS BACKGROUND ZOOM / BLACK-STRIP FIX ────────────────────────────────
+// The CSS `100lvh` above handles iOS 15.4+. This JS covers older Safari.
+//
+// THE BUG: window.innerHeight at load = small viewport (chrome visible,
+// e.g. 700px). On first scroll iOS collapses chrome → viewport grows to
+// ~770px. If the div is locked to 700px, a 70px black strip appears.
+// And if the div resizes dynamically, background-size:cover recomputes
+// → the visible zoom effect.
+//
+// FIX: lock to window.screen.height — the full device screen height in
+// CSS pixels. This value NEVER changes (it's the physical screen, not
+// the viewport). It's always ≥ any possible viewport, so:
+//   • No gap / black strip — div always covers the full screen.
+//   • No zoom — height never changes, so cover never recomputes.
 (function () {
   var bg = document.getElementById('mob-bg-img');
   if (!bg || !window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
-  // Capture height with chrome fully visible (the "small" viewport)
-  function lockHeight() { bg.style.height = window.innerHeight + 'px'; }
+  function lockHeight() {
+    // screen.height = full device screen in CSS px, chrome-state-independent
+    bg.style.height = window.screen.height + 'px';
+  }
   lockHeight();
   window.addEventListener('orientationchange', function () {
-    // Wait for the browser to finish rotating before re-measuring
     setTimeout(lockHeight, 400);
   });
 })();
