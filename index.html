@@ -1044,9 +1044,13 @@
   @media(max-width:900px){
     #hero {
       grid-template-columns:1fr;
-      /* Portrait: content at the top (just below the fixed nav) so the
-         background image fills below the text, not above it.
-         padding-top clears the ~80px nav + adds breathing room.        */
+      /* Drop the forced full-screen height — on portrait the content is
+         ~40% of 100vh, leaving a 60% void above the next section.
+         Let the hero size to its content + padding instead.
+         overflow:visible allows the fade-up animations to play without
+         clipping at the top edge of the container.                     */
+      min-height: auto;
+      overflow: visible;
       align-content: start;
       padding-top: 7.5rem;
       padding-bottom: 4rem;
@@ -1057,6 +1061,8 @@
     .quote-grid { grid-template-columns:1fr 1fr; }
     .zarf-cover { max-width:400px; }
     footer { padding:3rem 3rem 2rem; }
+    /* Tablet: consistent section spacing between desktop (6rem) and mobile (4.5rem) */
+    section { padding:5rem 3rem; }
     /* iPad — tagline can use more width now hero is single col */
     .hero-tagline { font-size:clamp(0.88rem,2vw,1.05rem); max-width:90%; }
     .hero-tagline strong { font-size:clamp(0.98rem,2.2vw,1.18rem); }
