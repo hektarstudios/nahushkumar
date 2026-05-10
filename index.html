@@ -119,20 +119,38 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
-  #mob-bg-img { display: none; } /* not used — kept for markup compatibility */
+  #mob-bg-img { display: none; }
 
-  /* ── iOS / TOUCH DEVICE BACKGROUND FIX ───────────────────────────────
-     background-attachment:fixed is broken on all iOS/iPadOS Safari —
-     it tiles from the viewport rather than scrolling naturally, causing
-     the image to appear skewed or zoomed.
-     Fix: simply switch to scroll attachment on any touch-primary device.
-     Same desktop image, no extra file needed, no z-index complexity.
-     Works in both portrait and landscape, all iPad sizes.
+  /* ── iOS / iPadOS BACKGROUND FIX ─────────────────────────────────────
+     background-attachment:fixed is broken on iOS Safari for all devices.
+     For most touch contexts background-attachment:scroll works acceptably,
+     but on iPad PORTRAIT specifically it fails visually because the image
+     is sized against the full document height (often 5000px+), making
+     background-size:cover zoom the image to an unrecognisable sliver.
+
+     Fix for iPad portrait only:
+       • Null out the html background-image for this context.
+       • Show a position:fixed div instead — its background is always
+         sized against the viewport (not the document), so cover works
+         correctly and the image stays put while content scrolls.
+       • Uses bg-stage.jpg (the same file that works on desktop) so
+         there is no dependency on a separate mobile asset.
+
+     Selector: touch device (hover:none + pointer:coarse) AND portrait
+     AND min-width:600px (excludes phones, which handle < 680px via their
+     own layout breakpoint and are fine with the default behaviour).
      ──────────────────────────────────────────────────────────────────── */
-  @media (hover: none) and (pointer: coarse) {
-    html {
-      background-attachment: scroll;
+  @media (hover: none) and (pointer: coarse) and (orientation: portrait) and (min-width: 600px) {
+    html { background-image: none; }
+    #mob-bg-img {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image: url('assets/images/bg-stage.jpg');
+      background-size: cover;
       background-position: center 20%;
+      pointer-events: none;
     }
   }
 
