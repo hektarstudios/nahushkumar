@@ -1044,12 +1044,12 @@
   @media(max-width:900px){
     #hero {
       grid-template-columns:1fr;
-      /* align-items positions items within their grid area — it doesn't
-         move the row. align-content: end pushes the row track itself to
-         the bottom of the min-height:100vh container, eliminating the
-         dead zone between the nav and the hero text in portrait.       */
-      align-content: end;
-      padding-bottom: 3.5rem;
+      /* Portrait: content at the top (just below the fixed nav) so the
+         background image fills below the text, not above it.
+         padding-top clears the ~80px nav + adds breathing room.        */
+      align-content: start;
+      padding-top: 7.5rem;
+      padding-bottom: 4rem;
     }
     .hero-visual { display:none; }
     .about-grid,.zarf-inner,.vo-grid,.book-inner { grid-template-columns:1fr;gap:3rem; }
