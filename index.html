@@ -1046,11 +1046,17 @@
     .hero-tagline { font-size:clamp(0.8rem,1.3vw,1rem); max-width:480px; }
     .hero-tagline strong { font-size:clamp(0.9rem,1.5vw,1.1rem); }
     .hero-pills { margin-bottom:2rem; }
-    /* iPad: tighten hero top padding so content sits closer to the nav */
-    #hero { padding-top:clamp(4rem,7vh,6rem); }
   }
   @media(max-width:900px){
-    #hero { grid-template-columns:1fr; }
+    #hero {
+      grid-template-columns:1fr;
+      /* Content was being vertically centered in 100vh — with the photo
+         column hidden that created a huge dead zone above the text.
+         Switch to flex-end so it anchors near the bottom of the hero,
+         matching the mobile layout's feel. */
+      align-items: flex-end;
+      padding-bottom: 3.5rem;
+    }
     .hero-visual { display:none; }
     .about-grid,.zarf-inner,.vo-grid,.book-inner { grid-template-columns:1fr;gap:3rem; }
     .v-row { grid-template-columns:1fr 1fr; }
