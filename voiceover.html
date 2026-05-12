@@ -31,12 +31,26 @@
 :root{--bg:#07050A;--surface:#11100D;--surface2:#1B1812;--gold:#C9A35E;--gold-light:#E6C788;--champagne:#F1E7D4;--wine:#7A2E2A;--coral:#7A2E2A;--muted:#B5A992;--border:rgba(201,163,94,0.18);--text-primary:#F5ECD8;--text-secondary:#D4C5A8;--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'Manrope',system-ui,sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
+/* ── BACKGROUND ──────────────────────────────────────────────────────
+   Three tiers:
+   1. Desktop/laptop (hover:hover) — fixed bg on <html>, landscape img
+   2. iPad touch (≥768px, hover:none) — fixed div, landscape img
+   3. Phone (≤767px) — fixed div, portrait mobile img, width-based rule
+      so it catches ALL phone browsers regardless of pointer/hover media.
+
+   The #mob-bg-img div avoids iOS Safari's background-attachment:fixed
+   zoom bug (chrome collapse → cover recomputes → visible jump).
+   100lvh is the "large viewport" static height — never changes.
+   ──────────────────────────────────────────────────────────────────── */
+
+/* Desktop default — landscape image, true parallax */
 html{scroll-behavior:smooth;background-color:var(--bg);background-image:url('assets/images/bg-stage.jpg');background-size:cover;background-position:center 35%;background-repeat:no-repeat;background-attachment:fixed}
+html,body{overflow-x:hidden}
 #mob-bg-img{display:none}
 
+/* Shared fixed-div base for all touch devices */
 @media(hover:none)and(pointer:coarse){
-  html{background-image:none;overflow-x:hidden}
-  body{overflow-x:hidden}
+  html{background-image:none}
   #mob-bg-img{
     display:block;position:fixed;top:0;left:0;
     width:100vw;height:100vh;height:100lvh;
@@ -46,19 +60,36 @@ html{scroll-behavior:smooth;background-color:var(--bg);background-image:url('ass
     will-change:transform;
   }
 }
+/* iPad (touch ≥768px): desktop landscape image */
 @media(hover:none)and(pointer:coarse)and(min-width:768px){
-  #mob-bg-img{
-    background-image:url('assets/images/bg-stage.jpg');
-    background-size:cover;
-    background-position:center 30%;
-  }
+  #mob-bg-img{background-image:url('assets/images/bg-stage.jpg');background-size:cover;background-position:center 30%}
 }
+/* Phone via pointer query */
 @media(hover:none)and(pointer:coarse)and(max-width:767px){
+  #mob-bg-img{background-image:url('assets/images/bg-stage-mobile.jpg');background-size:cover;background-position:center top;filter:brightness(1.1)}
+}
+
+/* ── PHONE FALLBACK (width-based — catches ALL phone browsers) ────────
+   This rule fires on any screen ≤767px wide, regardless of whether the
+   hover/pointer queries above matched. It overrides the desktop html
+   background and forces the fixed-div approach with the mobile image.
+   This is the rule that actually fixes the zoom issue on iOS Chrome,
+   Firefox, and any browser where pointer:coarse doesn't fire.
+   ──────────────────────────────────────────────────────────────────── */
+@media(max-width:767px){
+  html{background-image:none}
   #mob-bg-img{
+    display:block;position:fixed;top:0;left:0;
+    width:100vw;height:100vh;height:100lvh;
+    z-index:0;
     background-image:url('assets/images/bg-stage-mobile.jpg');
-    background-size:100% auto;
+    background-size:cover;
     background-position:center top;
+    background-repeat:no-repeat;
+    pointer-events:none;
     filter:brightness(1.1);
+    -webkit-transform:translateZ(0);transform:translateZ(0);
+    will-change:transform;
   }
 }
 
