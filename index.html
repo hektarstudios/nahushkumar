@@ -2719,7 +2719,7 @@ const FADE_SECS  = 10;
 // Per-track state
 const voState = {};
 VO_IDS.forEach(id => {
-  voState[id] = { peaks: null, decoded: false };
+  voState[id] = { peaks: null };
 });
 
 // ── Synthetic waveform peaks (voice-shaped envelope) ─────────────────────
@@ -2740,32 +2740,6 @@ VO_IDS.forEach((id, i) => {
   voState[id].peaks = makePeaks(i + 1);
 });
 
-// ── Decode real audio file → replace synthetic peaks ─────────────────────
-async function decodeWaveform(id) {
-  const audio = document.getElementById(id);
-  if (!audio.src || !audio.src.includes('.mp3')) return;
-  try {
-    const r = await fetch(audio.src);
-    if (!r.ok) return;
-    const tmpCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const decoded = await tmpCtx.decodeAudioData(await r.arrayBuffer());
-    await tmpCtx.close();
-    const raw = decoded.getChannelData(0);
-    const step = Math.floor(raw.length / BAR_COUNT);
-    const peaks = new Float32Array(BAR_COUNT);
-    let max = 0;
-    for (let i = 0; i < BAR_COUNT; i++) {
-      let s = 0;
-      for (let j = 0; j < step; j++) s += Math.abs(raw[i * step + j]);
-      peaks[i] = s / step;
-      if (peaks[i] > max) max = peaks[i];
-    }
-    if (max > 0) peaks.forEach((_, i) => peaks[i] /= max);
-    voState[id].peaks = peaks;
-    voState[id].decoded = true;
-    reDraw(id);
-  } catch (e) { /* file not ready — synthetic stays */ }
-}
 
 // ── Draw waveform ─────────────────────────────────────────────────────────
 function drawWaveform(id, progress, hoverRatio) {
@@ -2883,9 +2857,6 @@ function voPlay(id) {
     voCurrentId = null;
     return;
   }
-
-  // Decode real waveform on first play
-  if (!voState[id].decoded) decodeWaveform(id);
 
   // Reset volume to full on every play
   audio.volume = 1;
