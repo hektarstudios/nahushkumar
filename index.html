@@ -747,6 +747,114 @@
   .v-tag { position:absolute;top:.8rem;left:1rem;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;padding:.28rem .8rem;background:rgba(11,9,7,.78);color:var(--gold-light);border:1px solid rgba(201,163,94,.35);z-index:5;backdrop-filter:blur(6px); }
   .v-info { display:none; }
 
+  /* ── Press Kit CTA — below live video grid ── */
+  .live-pk-cta {
+    margin-top: 2.8rem;
+  }
+  .live-pk-combo {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background .35s;
+  }
+  .live-pk-combo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(201,163,94,0.04);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .45s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+  }
+  .live-pk-combo:hover::before { transform: scaleX(1); }
+  .pk-combo-accent {
+    width: 3px;
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, transparent 5%, var(--gold-light) 30%, var(--gold) 60%, transparent 95%);
+    transition: background .35s;
+  }
+  .live-pk-combo.pk-opening .pk-combo-accent {
+    background: linear-gradient(to bottom, transparent 5%, #E89A8E 30%, var(--wine) 60%, transparent 95%);
+  }
+  .pk-combo-left {
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .3rem;
+    flex: 1;
+  }
+  .pk-combo-stamp {
+    font-size: .6rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: rgba(201,163,94,0.55);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    transition: color .3s;
+  }
+  .pk-combo-stamp::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+  .live-pk-combo:hover .pk-combo-stamp { color: rgba(201,163,94,0.8); }
+  .live-pk-combo.pk-opening .pk-combo-stamp { color: rgba(240,168,142,0.55); }
+  .pk-combo-name {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 1.55rem;
+    line-height: 1;
+    color: var(--champagne);
+    transition: color .3s;
+  }
+  .pk-combo-name em { font-style: italic; color: var(--gold-light); }
+  .live-pk-combo.pk-opening .pk-combo-name { color: rgba(245,236,216,0.7); }
+  .pk-combo-sub {
+    font-size: .62rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(181,169,146,0.45);
+  }
+  .pk-combo-right {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem 1.6rem 1.2rem 1.4rem;
+    flex-shrink: 0;
+  }
+  .pk-combo-btn {
+    font-family: var(--font-body);
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: .7rem 1.6rem;
+    border: 1px solid rgba(201,163,94,0.5);
+    color: var(--gold-light);
+    background: transparent;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background .3s, color .3s, border-color .3s;
+    white-space: nowrap;
+  }
+  .live-pk-combo:hover .pk-combo-btn {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+  .live-pk-combo.pk-opening .pk-combo-btn {
+    background: var(--wine);
+    color: var(--champagne);
+    border-color: var(--wine);
+    pointer-events: none;
+  }
+
   /* Modal */
   /* Zarf popup overlay — animated */
   .modal-overlay { display:none;position:fixed;inset:0;z-index:200;background:rgba(7,5,10,.42);backdrop-filter:blur(4px) saturate(0.85);-webkit-backdrop-filter:blur(4px) saturate(0.85);align-items:center;justify-content:center; }
@@ -1686,6 +1794,22 @@
       </div>
     </div>
   </div>
+
+  <!-- PRESS KIT CTA -->
+  <div class="live-pk-cta reveal d2">
+    <div class="live-pk-combo" id="livePressKitBtn" onclick="livePressKit(event)">
+      <div class="pk-combo-accent"></div>
+      <div class="pk-combo-left">
+        <div class="pk-combo-stamp">Press &amp; Media</div>
+        <div class="pk-combo-name">Nahush <em>Kumar</em></div>
+        <div class="pk-combo-sub">Bios · Hi-res images · Showreels · Tech rider</div>
+      </div>
+      <div class="pk-combo-right">
+        <button class="pk-combo-btn" id="pkComboBtn">View Press Kit</button>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- VIDEO MODAL -->
@@ -2665,6 +2789,21 @@ function openPressKit(e) {
   modal.offsetHeight;
   modal.classList.add('pk-open');
   pkAnimateCounters();
+}
+
+function livePressKit(e) {
+  e.preventDefault();
+  const combo = document.getElementById('livePressKitBtn');
+  const btn = document.getElementById('pkComboBtn');
+  combo.classList.add('pk-opening');
+  btn.textContent = '✦ Opening…';
+  setTimeout(() => {
+    openPressKit(e);
+    setTimeout(() => {
+      combo.classList.remove('pk-opening');
+      btn.textContent = 'View Press Kit';
+    }, 500);
+  }, 200);
 }
 function closePressKit() {
   const modal = document.getElementById('pk-modal');
