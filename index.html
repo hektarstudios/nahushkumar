@@ -115,7 +115,6 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html {
-    scroll-behavior: smooth;
     background-color: #07050A;
     background-image: url('assets/images/bg-stage.jpg');
     background-size: cover;
@@ -3250,7 +3249,62 @@ window.addEventListener('load', fitHeroFrame);
 window.addEventListener('resize', fitHeroFrame);
 // Also run after animation delay
 setTimeout(fitHeroFrame, 900);
-window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('scrolled',scrollY>60); });
+</script>
+<!-- Lenis smooth scroll — jsDelivr is more reliable than unpkg -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+// ── LENIS SMOOTH SCROLL ───────────────────────────────────────────────────
+const lenis = new Lenis({
+  duration: 1.25,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  // expo-out
+  smooth: true,
+  smoothTouch: false,   // native feel on touch devices
+  touchMultiplier: 2,
+  infinite: false,
+});
+
+// Drive Lenis via rAF
+function lenisRaf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(lenisRaf);
+}
+requestAnimationFrame(lenisRaf);
+
+// Nav scrolled state via Lenis scroll events
+lenis.on('scroll', ({ scroll }) => {
+  document.getElementById('nav').classList.toggle('scrolled', scroll > 60);
+});
+
+// Anchor links — let Lenis handle smooth scrolling to sections
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const href = this.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    e.preventDefault();
+    lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+  });
+});
+
+// Pause Lenis when modals / mobile menu are open, resume on close
+// (body overflow:hidden is set in openZarfPopup / openMob — we wrap those)
+const _origOpenZarf = typeof openZarfPopup === 'function' ? openZarfPopup : null;
+const _origCloseZarf = typeof closeZarfPopup === 'function' ? closeZarfPopup : null;
+// Patch popup helpers to stop/start Lenis
+if (window.openZarfPopup) {
+  const _oz = window.openZarfPopup;
+  window.openZarfPopup = function(e) { lenis.stop(); _oz(e); };
+}
+if (window.closeZarfPopup) {
+  const _cz = window.closeZarfPopup;
+  window.closeZarfPopup = function() { _cz(); setTimeout(() => lenis.start(), 520); };
+}
+// Patch mobile menu helpers
+const _origOpenMob = window.openMob;
+const _origCloseMob = window.closeMob;
+if (_origOpenMob) window.openMob = function() { lenis.stop(); _origOpenMob(); };
+if (_origCloseMob) window.closeMob = function() { _origCloseMob(); lenis.start(); };
 
 // ── iOS BACKGROUND ZOOM / BLACK-STRIP FIX ────────────────────────────────
 // The CSS `100lvh` above handles iOS 15.4+. This JS covers older Safari.
